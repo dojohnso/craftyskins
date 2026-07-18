@@ -46,7 +46,7 @@
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
-    <script type="module" crossorigin src="./assets/index-DeCV0IhA.js"></script>
+    <script type="module" crossorigin src="./assets/index-DH4bvzbQ.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CGqfXmv0.css">
   </head>
   <body>
@@ -55,6 +55,41 @@
         <p>CraftySkins is a 3D skin editor and needs JavaScript to run.<br />Please enable JavaScript and reload.</p>
       </div>
     </noscript>
-    <div id="root"></div>
+    <div id="root">
+      <!-- static boot splash: replaced the instant React mounts -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;height:100vh;background:#f3f4f6;font-family:system-ui,-apple-system,sans-serif">
+        <img src="./favicon.png" width="48" height="48" alt="" style="image-rendering:pixelated;border-radius:10px" />
+        <p id="boot-msg" style="margin:0;font-size:14px;font-weight:500;color:#6b7280">Loading CraftySkins…</p>
+      </div>
+    </div>
+    <script>
+      // Mid-deploy recovery: GitHub Pages caches index.html briefly, so right
+      // after a deploy a stale copy can reference a JS bundle that no longer
+      // exists. If the bundle fails (or nothing mounts in 12s), reload with a
+      // cache-busting query to punch through the CDN — at most twice.
+      (function () {
+        var KEY = 'cs.bootRetries'
+        window.__csReady = false
+        function retry() {
+          if (window.__csReady) return
+          var tries = +(sessionStorage.getItem(KEY) || 0)
+          var msg = document.getElementById('boot-msg')
+          if (tries < 2) {
+            if (msg) msg.textContent = 'Grabbing the latest update…'
+            sessionStorage.setItem(KEY, String(tries + 1))
+            var u = new URL(location.href)
+            u.searchParams.set('fresh', Date.now().toString(36))
+            setTimeout(function () { location.replace(u.toString()) }, 700)
+          } else if (msg) {
+            msg.textContent = 'Still loading — an update may be rolling out. Try again in a minute.'
+          }
+        }
+        window.addEventListener('error', function (e) {
+          var t = e.target
+          if (t && (t.tagName === 'SCRIPT' || t.tagName === 'LINK')) retry()
+        }, true)
+        setTimeout(retry, 12000)
+      })()
+    </script>
   </body>
 </html>
