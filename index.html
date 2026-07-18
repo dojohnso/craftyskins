@@ -46,7 +46,7 @@
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     }
     </script>
-    <script type="module" crossorigin src="./assets/index-DH4bvzbQ.js"></script>
+    <script type="module" crossorigin src="./assets/index-C65WqWjI.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CGqfXmv0.css">
   </head>
   <body>
@@ -55,13 +55,13 @@
         <p>CraftySkins is a 3D skin editor and needs JavaScript to run.<br />Please enable JavaScript and reload.</p>
       </div>
     </noscript>
-    <div id="root">
-      <!-- static boot splash: replaced the instant React mounts -->
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;height:100vh;background:#f3f4f6;font-family:system-ui,-apple-system,sans-serif">
-        <img src="./favicon.png" width="48" height="48" alt="" style="image-rendering:pixelated;border-radius:10px" />
-        <p id="boot-msg" style="margin:0;font-size:14px;font-weight:500;color:#6b7280">Loading CraftySkins…</p>
-      </div>
+    <!-- static boot splash: a fixed overlay OUTSIDE #root so React mounting
+         underneath doesn't destroy it — the app fades it out when ready -->
+    <div id="boot-splash" style="position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#f3f4f6;font-family:system-ui,-apple-system,sans-serif;transition:opacity .35s ease">
+      <img src="./favicon.png" width="48" height="48" alt="" style="image-rendering:pixelated;border-radius:10px" />
+      <p id="boot-msg" style="margin:0;font-size:14px;font-weight:500;color:#6b7280">Loading CraftySkins…</p>
     </div>
+    <div id="root"></div>
     <script>
       // Mid-deploy recovery: GitHub Pages caches index.html briefly, so right
       // after a deploy a stale copy can reference a JS bundle that no longer
